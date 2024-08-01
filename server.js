@@ -43,7 +43,7 @@ const upload = multer({ storage: storage })
 
 //view engine setup
 app.set('view engine', 'ejs');
-app.set('views', __dirname + '\\view');
+app.set('views', __dirname + '/view');
 app.use(express.static('public'));
 
 
