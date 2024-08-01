@@ -18,7 +18,7 @@ const connection = mysql.createConnection({
     // database: 'foogledb'
     host: 'db4free.net',
     user: 'foodbuser',
-    password: 'foodbpassword',
+    password: 'foodbpass',
     database: 'foodbname'
 });
 connection.connect((err) => {
