@@ -12,10 +12,14 @@ app.use(bodyParser.json());
 // Create MySQL connection
 const mysql = require('mysql2');
 const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'foogledb'
+    // host: 'localhost',
+    // user: 'root',
+    // password: '',
+    // database: 'foogledb'
+    host: 'db4free.net',
+    user: 'foodbuser',
+    password: 'foodbpassword',
+    database: 'foodbname'
 });
 connection.connect((err) => {
     if (err) {
@@ -169,7 +173,7 @@ app.get("/recipe_edit/:id", (req, res) => {
 app.post("/recipe_edit/:id", (req, res) => {
     let { name, description, step } = req.body;
     console.log(req.body);
-    
+
     let q = `UPDATE recipe SET name= "${name}", description="${description}", step="${step} WHERE "`;
     qry(q)
         .then(result => { res.send(result) })
