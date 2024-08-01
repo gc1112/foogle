@@ -1,0 +1,76 @@
+SELECT * 
+FROM market INNER JOIN m_has_i ON market.id = m_has_i.m_id 
+WHERE market.name='b_market'
+
+
+CREATE TABLE recipe(
+    id INT(4) NOT NULL,
+    name VARCHAR(20) NOT NULL,
+    PRIMARY KEY (id)
+)
+
+
+CREATE TABLE r_has_i(
+    r_id int(4) NOT NULL,
+    i_id int(4) NOT NULL,
+    FOREIGN KEY (r_id) REFERENCES recipe(id),
+    FOREIGN KEY (i_id) REFERENCES ingredient(id),
+    PRIMARY KEY (r_id, i_id)
+)
+
+
+INSERT INTO recipe (name)
+VALUES ('r_1'),('r_2');
+
+UPDATE `recipe` SET `description` = 'hi, i am r_1', `step` = 'add water|add flour|add xxx|' WHERE `recipe`.`id` = 1;
+
+--simple search
+
+-- get market from food id (just use adv?)
+SELECT ingredient.name,price, market.name,market.postal
+FROM recipe INNER JOIN r_has_i ON recipe.id=r_has_i.r_id
+INNER JOIN ingredient ON ingredient.id=r_has_i.i_id
+INNER JOIN m_has_i ON m_has_i.i_id=ingredient.id
+INNER JOIN market ON market.id=m_has_i.m_id
+WHERE recipe.id=1
+
+--get ingredient from name
+SELECT ingredient.name
+FROM recipe INNER JOIN r_has_i ON recipe.id=r_has_i.r_id
+INNER JOIN ingredient ON ingredient.id=r_has_i.i_id
+WHERE recipe.name LIKE '%r_1%'
+
+
+--adv search
+--find ingredient from market
+SELECT ingredient.id,price,market.name,postal
+FROM ingredient INNER JOIN m_has_i ON ingredient.id=i_id
+INNER JOIN market ON market.id=m_id
+WHERE ingredient.name = 'aaa' OR ingredient.name = 'bbb'
+ 
+
+SELECT GROUP_CONCAT(ingredient.name SEPARATOR ',') AS i_name ,price,market.name,postal
+FROM ingredient INNER JOIN m_has_i ON ingredient.id=i_id
+INNER JOIN market ON market.id=m_id
+WHERE ingredient.name IN ('aaa','bbb','')
+GROUP BY market.name
+
+
+--update market item price
+UPDATE m_has_i
+SET m_has_i.price=800
+WHERE ingredient.name='aaa' AND market.name='a_market'
+
+-- delete market has ingredient
+
+DELETE FROM m_has_i
+WHERE i_id IN (
+    SELECT ingredient.id FROM ingredient
+    INNER JOIN market ON ingredient.id = m_has_i.i_id AND market.id = m_has_i.m_id
+    WHERE ingredient.name = 'aaa' AND market.name = 'a_market'
+);
+
+--add market item
+INSERT INTO m_has_i ( i_id,m_id ) VALUES(
+     3,1
+);

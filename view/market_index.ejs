@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <title>Supermarket App</title>
+  <link href="/style.css" rel="stylesheet">
+</head>
+
+<body>
+  <%-include ('partial/nav') %>
+    <div class="container">
+      <br>
+      <div class="header">
+        Market Item Index
+      </div>
+      <br>
+      <table class="table table-hover small text-center">
+        <thead>
+          <tr>
+            <th width="50">market</th>
+            <th width="100">ingredient</th>
+            <th width="50">Price</th>
+            <th width="50">Edit</th>
+            <th width="50">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for(let i=0; i < data.length; i++) { %>
+            <tr>
+              <td>
+                <%= data[i].m_name %>
+              </td>
+              <td>
+                <%= data[i].i_name %>
+              </td>
+              <td>
+                <%= data[i].price %>
+              </td>
+              <td>
+                <form action="/ingredient_edit/<%=data[i].m_id%>/<%=data[i].i_id%>" method="post" class="gy-3">
+                  <input type="text" name="new_price" placeholder="enter new value here">
+                  <input type="submit" value="Submit" />
+                </form>
+              </td>
+              <td>
+                <form action="/ingredient_del/<%=data[i].m_id%>/<%=data[i].i_id%>" method="post" class="gy-3">
+                  <input type="submit" value="delete" onclick="return confirm('are you sure to delete?')"/>
+                </form>
+              </td>
+            </tr>
+            <% } %>
+        </tbody>
+      </table>
+    </div>
+</body>
+
+</html>
